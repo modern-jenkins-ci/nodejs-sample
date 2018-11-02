@@ -7,7 +7,11 @@ node('docker') {
     stage('Pull NodeJs Code') {
         dir('node-todo') {
             def gitInfo = git url: 'https://github.com/scotch-io/node-todo.git', branch: 'master'
-            println gitInfo
+
+            // set the git commit info on the environment
+            if(gitInfo.GIT_COMMIT) {
+                env.GIT_COMMIT = gitInfo.GIT_COMMIT
+            }
         }
     }
 
