@@ -18,9 +18,17 @@ node('docker') {
     }
 
     stage('Build Docker Image') {
-        docker.build(
-            "modern-jenkins/node-todo:${env.BUILD_NUMBER}",
-            "--squash --build-arg GIT_COMMIT=${env.GIT_COMMIT} ."
-        )
+        def builder
+        if(env.http_proxy) {
+            builder = docker.build(
+                "modern-jenkins/node-todo:${env.BUILD_NUMBER}",
+                "--squash --build-arg GIT_COMMIT=${env.GIT_COMMIT} --build-arg http_proxy --build-arg https_proxy ."
+            )
+        } else {
+            builder = docker.build(
+                "modern-jenkins/node-todo:${env.BUILD_NUMBER}",
+                "--squash --build-arg GIT_COMMIT=${env.GIT_COMMIT} ."
+            )
+        }
     }
 }
