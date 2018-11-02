@@ -2,18 +2,12 @@ node('docker') {
     stage('Get Latest Code') {
         cleanWs()
         checkout scm
-
-        // add debug to view GIT_COMMIT
-        sh 'env'
     }
 
     stage('Pull NodeJs Code') {
         dir('node-todo') {
-            git url: 'https://github.com/scotch-io/node-todo.git',
-                branch: 'master'
-
-            // add debug to view GIT_COMMIT
-            sh 'env'
+            def gitInfo = git url: 'https://github.com/scotch-io/node-todo.git', branch: 'master'
+            println gitInfo
         }
     }
 
